@@ -14,8 +14,8 @@ This program takes:
 
 
 Steps:
-    1. Line 73, Enter file path of csv file
-    2. Line 99, Enter file path of csv file
+    1. Line 77, Enter file path of csv file
+    2. Line 103, Enter file path of csv file
 -Future Updates-
 Display the data in table form
 
