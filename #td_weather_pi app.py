@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # td_weather_pi app
 # 12/24/2022
 # Last update: 12/24/2022
@@ -88,20 +89,20 @@ ttk.Label(frm, text=tabulate(table), font=("courier", 20, 'bold')
           ).grid(row=3, column=2, padx=25, pady=25)
 
 #List for the temp, humidity, and pressure values
-cumu_temp_vaues = [1, 6]
-temp_data_points = {'Cumulative Temperature': cumu_temp_vaues}
+cumu_temp_values = [1, 6]
+temp_data_points = {'Cumulative Temperature': cumu_temp_values}
 
-cumu_humi_vaues = [1, 6]
-humi_data_points = {'Cumulative Humidity': cumu_humi_vaues}
+cumu_humi_values = [1, 6]
+humi_data_points = {'Cumulative Humidity': cumu_humi_values}
 
-cumu_press_vaues = [1, 6]
-press_data_points = {'Cumulative Pressure': cumu_press_vaues}
+cumu_press_values = [1, 6]
+press_data_points = {'Cumulative Pressure': cumu_press_values}
 
 #Timer function to increment list with updated data fro graphs
 def graph_timer():
 
     #Temperature
-    cumu_temp_vaues.append(-2)
+    cumu_temp_values.append(-2)
     temp_data = pd.DataFrame(temp_data_points)
     figure1 = plt.Figure(figsize=(4.5, 4), dpi=100)
     ax1 = figure1.add_subplot(111)
@@ -112,21 +113,21 @@ def graph_timer():
     
     
     # Humidity 
-    cumu_humi_vaues.append(-3)
+    cumu_humi_values.append(-3)
     humi_data = pd.DataFrame(humi_data_points)
     figure2 = plt.Figure(figsize=(4.5, 4), dpi=100)
     ax1 = figure2.add_subplot(111)
-    humi_canvas = FigureCanvasTkAgg(figure1, master=main)
+    humi_canvas = FigureCanvasTkAgg(figure2, master=main)
     humi_canvas.get_tk_widget().place(relx=.350, rely=.300,)
     humi_data = humi_data[['Cumulative Humidity']]
     humi_data.plot(kind='line', ax=ax1, title="Cumulative Humidity")
     
     #Pressure
-    cumu_press_vaues.append(-4)
+    cumu_press_values.append(-4)
     press_data = pd.DataFrame(press_data_points)
     figure3 = plt.Figure(figsize=(4.5, 4), dpi=100)
     ax1 = figure3.add_subplot(111)
-    press_canvas = FigureCanvasTkAgg(figure1, master=main)
+    press_canvas = FigureCanvasTkAgg(figure3, master=main)
     press_canvas.get_tk_widget().place(relx=.700, rely=.300,)
     press_data = press_data[['Cumulative Pressure']]
     press_data.plot(kind='line', ax=ax1, title="Cumulative Pressure")
