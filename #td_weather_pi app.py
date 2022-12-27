@@ -5,6 +5,11 @@
 
 # notes for tables; need tablulate module; pip install tabulate
 
+#sites for needed modules:
+#numpy and pandas:https://numpy.org/devdocs/user/troubleshooting-importerror.html
+#ImageTk:https://github.com/Skiller9090/Lucifer/issues/45:sudo apt-get install python3-pil python3-pil.imagetk
+#tabulate:https://bobbyhadz.com/blog/python-install-tabulate#install-tabulate-on-macos-or-linux:sudo pip3 install tabulate
+
 # from sense_hat import SenseHat
 from tkinter import *
 from tkinter import ttk
