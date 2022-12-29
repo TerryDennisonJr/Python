@@ -6,9 +6,10 @@
 # notes for tables; need tablulate module; pip install tabulate
 
 #sites for needed modules:
+#matplotlib: pip install matplotlib
 #numpy and pandas:https://numpy.org/devdocs/user/troubleshooting-importerror.html
 #ImageTk:https://github.com/Skiller9090/Lucifer/issues/45:sudo apt-get install python3-pil python3-pil.imagetk
-#tabulate:https://bobbyhadz.com/blog/python-install-tabulate#install-tabulate-on-macos-or-linux:sudo pip3 install tabulate
+#tabulate:https://bobbyhadz.com/blog/python-install-tabulate#install-tabulate-on-macos-or-linux:sudo pip install tabulate
 
 # from sense_hat import SenseHat
 from tkinter import *
@@ -18,6 +19,7 @@ import os
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tabulate import tabulate
 import matplotlib.pyplot as plt
+from sense_hat import SenseHat
 
 #Creation of main GUI and specifications
 main = Tk()
@@ -58,9 +60,9 @@ def label_timer():
     #Global variables to hold data in labels
     global temp_val, press_val, humi_val
 
-    temp_val += 1
-    press_val += 1
-    humi_val += 1
+    temp_val = sense.get_temperature()
+    press_val = sense.get_pressure()
+    humi_val = sense.get_humidity()
     
     #Updates labels with data in miliseconds
     main.after(1000, label_timer)
@@ -81,33 +83,39 @@ ttk.Button(frm, text="Quit", width=25, command=lambda: [
            os._exit(0)]).grid(column=2, row=4, pady=500)
 
 
-#High and low tables for temp, humidity, and pressure
-table = [['Low', 'High'],
-         ['-16', '98']]
 
-#Creation of labels to hold data tables
-ttk.Label(frm, text=tabulate(table), font=("courier", 20, 'bold')
-          ).grid(row=3, column=0, padx=25, pady=25)
-ttk.Label(frm, text=tabulate(table), font=("courier", 20, 'bold')
-          ).grid(row=3, column=1, padx=25, pady=25)
-ttk.Label(frm, text=tabulate(table), font=("courier", 20, 'bold')
-          ).grid(row=3, column=2, padx=25, pady=25)
 
 #List for the temp, humidity, and pressure values
-cumu_temp_values = [1, 6]
+cumu_temp_values = [temp_val]
 temp_data_points = {'Cumulative Temperature': cumu_temp_values}
 
-cumu_humi_values = [1, 6]
+cumu_humi_values = [humi_val]
 humi_data_points = {'Cumulative Humidity': cumu_humi_values}
 
-cumu_press_values = [1, 6]
+cumu_press_values = [press_val]
 press_data_points = {'Cumulative Pressure': cumu_press_values}
 
 #Timer function to increment list with updated data fro graphs
 def graph_timer():
 
+    #High and low tables for temp, humidity, and pressure
+    temp_table = [['Low', 'High'],
+             [min(cumu_temp_values), max(cumu_temp_values)]]
+    humi_table = [['Low', 'High'],
+             [min(cumu_humi_values), max(cumu_humi_values)]]
+    press_table = [['Low', 'High'],
+             [min(cumu_press_values), max(cumu_press_values)]]
+
+    #Creation of labels to hold data tables
+    ttk.Label(frm, text=tabulate(temp_table), font=("courier", 20, 'bold')
+              ).grid(row=3, column=0, padx=25, pady=25)
+    ttk.Label(frm, text=tabulate(humi_table), font=("courier", 20, 'bold')
+              ).grid(row=3, column=1, padx=25, pady=25)
+    ttk.Label(frm, text=tabulate(press_table), font=("courier", 20, 'bold')
+              ).grid(row=3, column=2, padx=25, pady=25)
+    
     #Temperature
-    cumu_temp_values.append(-2)
+    cumu_temp_values.append(temp_val)
     temp_data = pd.DataFrame(temp_data_points)
     figure1 = plt.Figure(figsize=(4.5, 4), dpi=100)
     ax1 = figure1.add_subplot(111)
@@ -118,7 +126,7 @@ def graph_timer():
     
     
     # Humidity 
-    cumu_humi_values.append(-3)
+    cumu_humi_values.append(humi_val)
     humi_data = pd.DataFrame(humi_data_points)
     figure2 = plt.Figure(figsize=(4.5, 4), dpi=100)
     ax1 = figure2.add_subplot(111)
@@ -128,7 +136,7 @@ def graph_timer():
     humi_data.plot(kind='line', ax=ax1, title="Cumulative Humidity")
     
     #Pressure
-    cumu_press_values.append(-4)
+    cumu_press_values.append(press_val)
     press_data = pd.DataFrame(press_data_points)
     figure3 = plt.Figure(figsize=(4.5, 4), dpi=100)
     ax1 = figure3.add_subplot(111)
